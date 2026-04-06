@@ -9,3 +9,4 @@
 - Day 2 final
 - Day 3
 - Update 3
+- Day 3 final
