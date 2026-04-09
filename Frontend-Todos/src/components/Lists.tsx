@@ -1,28 +1,46 @@
 /** @format */
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 // import type { Task } from "../types/task";
-  
-  interface Task {
-    id: number;
-    task: string;
-    status: boolean;
-  }
-  
+
+interface Task {
+  id: number;
+  task: string;
+  status: boolean;
+}
+
 interface ListsProps {
   tasks: Task[];
   setTasks: Dispatch<SetStateAction<Task[]>>;
 }
 
 export function Lists({ tasks, setTasks }: ListsProps) {
-  function toggleChecked(id: number) {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task.id === id ? { ...task, status: !task.status } : task,
-      ),
+  async function toggleChecked(id: number) {
+    await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/task/statusTask/${id}`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ id: id }),
+      },
     );
+
+    const updatedTasks = tasks.map((task) => {
+      if (task.id === id) {
+        return { ...task, status: !task.status };
+      }
+      return task;
+    });
+    setTasks(updatedTasks);
   }
 
-  function deleteHandle(id: number) {
+  async function deleteHandle(id: number) {
+    await fetch(
+      `${import.meta.env.VITE_BACKEND_URL}/api/task/deleteTask/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
+
     const remains = tasks.filter((task) => task.id !== id);
     setTasks(remains);
   }

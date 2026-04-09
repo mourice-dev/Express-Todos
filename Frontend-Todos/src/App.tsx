@@ -1,23 +1,28 @@
 /** @format */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+// import axios from "axios";
 import { Header } from "./components/Header";
 import { Forms } from "./components/Forms";
 import { Lists } from "./components/Lists";
-// import type { Task } from "./types/task";
 
 
 function App() {
-  
-  interface Task{
-    id: number,
-    task: string,
-    status: boolean
-}
-  const [tasks, setTasks] = useState<Task[]>([
-    { id: 1, task: "Build a Task Manager API", status: false },
-    { id: 2, task: "Prepare for frontend interview", status: false },
-  ]);
+  interface Task {
+    id: number;
+    task: string;
+    status: boolean;
+  }
+  const [tasks, setTasks] = useState<Task[]>([]);
+
+  useEffect(() => {
+    fetch(`${import.meta.env.VITE_BACKEND_URL}/api/task/getAllTask`)
+      .then((res) => res.json())
+      .then((data: Task[]) =>
+        setTasks(data.map((t) => ({ ...t, status: Boolean(t.status) })))
+      )
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <main className='min-h-screen bg-[#f7f8fb] px-4 py-14 sm:px-6'>

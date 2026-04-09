@@ -1,30 +1,41 @@
 /** @format */
 
-import type { Dispatch, FormEvent, SetStateAction } from "react";
+import {
+  type Dispatch,
+  type FormEvent,
+  type SetStateAction,
+} from "react";
 // import type { Task } from "../types/task";
-  
+
 interface Task {
-    id: number;
-    task: string;
-    status: boolean;
-  }
+  id: number;
+  task: string;
+  status: boolean;
+}
 
 interface FormsProps {
   setTasks: Dispatch<SetStateAction<Task[]>>;
 }
 
 export function Forms({ setTasks }: FormsProps) {
-  function submitHandle(event: FormEvent<HTMLFormElement>) {
+  async function submitHandle(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const formData = new FormData(form);
-    const newTask = formData.get("task-input");
+    const task = formData.get("task-input");
 
-    if (typeof newTask === "string") {
-      setTasks((prev) => [
-        ...prev,
-        { id: Date.now(), task: newTask, status: false },
-      ]);
+    if (typeof task === "string" && task.trim() !== "") {
+      const response = await fetch(
+        `${import.meta.env.VITE_BACKEND_URL}/api/task/insertTask`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ task: task, status: false }),
+        },
+      );
+      const newTask = await response.json();
+      setTasks((prev) => [...prev, newTask]);
+
       form.reset();
     }
   }
