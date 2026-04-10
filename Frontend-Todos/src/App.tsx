@@ -5,14 +5,9 @@ import { useState, useEffect } from "react";
 import { Header } from "./components/Header";
 import { Forms } from "./components/Forms";
 import { Lists } from "./components/Lists";
-
+import type { Task } from "./types/task";
 
 function App() {
-  interface Task {
-    id: number;
-    task: string;
-    status: boolean;
-  }
   const [tasks, setTasks] = useState<Task[]>([]);
 
   useEffect(() => {

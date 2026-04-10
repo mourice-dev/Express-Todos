@@ -5,13 +5,7 @@ import {
   type FormEvent,
   type SetStateAction,
 } from "react";
-// import type { Task } from "../types/task";
-
-interface Task {
-  id: number;
-  task: string;
-  status: boolean;
-}
+import type { Task } from "../types/task";
 
 interface FormsProps {
   setTasks: Dispatch<SetStateAction<Task[]>>;
