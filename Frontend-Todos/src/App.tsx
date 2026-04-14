@@ -14,7 +14,7 @@ function App() {
     fetch(`${import.meta.env.VITE_BACKEND_URL}/api/task/getAllTask`)
       .then((res) => res.json())
       .then((data: Task[]) =>
-        setTasks(data.map((t) => ({ ...t, status: Boolean(t.status) })))
+        setTasks(data.map((t) => ({ ...t, status: Boolean(t.status) }))),
       )
       .catch((err) => console.log(err));
   }, []);

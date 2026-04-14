@@ -1,10 +1,6 @@
 /** @format */
 
-import {
-  type Dispatch,
-  type FormEvent,
-  type SetStateAction,
-} from "react";
+import { type Dispatch, type FormEvent, type SetStateAction } from "react";
 import type { Task } from "../types/task";
 
 interface FormsProps {
